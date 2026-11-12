@@ -813,7 +813,6 @@ export const copy = {
   people: {
     title: "Who's behind the ideas",
     body: "Tap someone to see just their ideas.",
-    swipe: "Swipe for more →",
     all: "Show everyone",
     less: "Show fewer",
   },

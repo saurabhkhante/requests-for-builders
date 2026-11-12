@@ -10,6 +10,7 @@ import { PUBLIC_URLS } from "@/lib/public-urls";
 import { cn } from "@/lib/cn";
 
 import { copy, people, tracks, type Person, type PersonType, type Request } from "../content";
+import { PeopleMarquee } from "./people-marquee";
 import { CARD_CLASS, cardLabel, Monogram, NUMBER, PERSON, RequestCardBody, subline, Tags, VISIBLE } from "./request-card";
 
 /** Only people with at least one visible request. */
@@ -201,32 +202,8 @@ export function Board() {
             </div>
             <p className="text-[15px] text-cream-muted">{copy.people.body}</p>
           </div>
-          {/* Phones: everyone in one swipeable row, so the problems start sooner. */}
-          <ul className="-mx-4 mt-5 flex snap-x items-start gap-1 overflow-x-auto px-4 pb-1 [mask-image:linear-gradient(90deg,#000_82%,transparent)] [scrollbar-width:none] sm:hidden">
-            {ASKERS.map((p) => {
-              const active = person === p.id;
-              return (
-                <li key={p.id} className="snap-start">
-                  <button
-                    type="button"
-                    aria-pressed={active}
-                    onClick={() => pickPerson(p.id)}
-                    className="flex w-[100px] flex-col items-center gap-2 rounded-xl px-1 py-2 text-center"
-                  >
-                    <Monogram
-                      person={p}
-                      className={cn("size-16 bg-cream-card text-[20px] ring-2 ring-offset-2 ring-offset-cream", active ? "ring-cream-ink" : "ring-transparent")}
-                    />
-                    <span className="flex flex-col gap-1">
-                      <span className={cn("line-clamp-2 text-[14px] leading-tight text-cream-ink", active && "font-semibold")}>{p.name}</span>
-                      {subline(p) ? <span className="line-clamp-2 text-[12.5px] leading-[1.3] text-cream-muted">{subline(p)}</span> : null}
-                    </span>
-                  </button>
-                </li>
-              );
-            })}
-          </ul>
-          <p className="mt-2 text-[13px] text-cream-muted sm:hidden">{copy.people.swipe}</p>
+          {/* Phones: everyone as cards in one drifting, swipeable row, so the problems start sooner. */}
+          <PeopleMarquee list={ASKERS} active={person} onPick={pickPerson} className="mt-5 sm:hidden" />
           <ul className="mt-8 hidden auto-rows-fr gap-2.5 sm:grid sm:grid-cols-2 lg:grid-cols-4">
             {(allPeople ? ASKERS : ASKERS.slice(0, PEOPLE_PREVIEW)).map((p) => {
               const active = person === p.id;
