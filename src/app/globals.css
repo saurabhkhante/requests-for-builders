@@ -1,0 +1,721 @@
+@import "tailwindcss";
+
+/*
+ * Builders Day design tokens. Brand from TPF UnConference '26, layout and
+ * motion from a modern layer.
+ *
+ * Palette taken from the UnConference '26 site's CSS (Nov 11): its dark
+ * blocks run linear-gradient(#121a17, #213535) and
+ * linear-gradient(#213535, #213535 31%, #001314). The page background is
+ * that gradient; --bg is its middle, #213535.
+ *
+ * Contrast (WCAG 2.x) against --bg #213535 (the lightest point of the gradient):
+ *   ink       #eae6da    10.4:1
+ *   muted     .68 alpha   5.7:1  (7.1:1 on --deep #121a17). Never on --soft fills.
+ *   gold      #eecd7a     8.4:1  (as text, or as a fill with --bg text)
+ *   teal-light #6fb4bb    5.5:1
+ *   bloom     #f28ba8     5.6:1  (the UnConference flowers; small accents only)
+ *   success   #7fcf9f, warning #e8b65c: above 7:1
+ *   error     #f2788f     4.8:1  (keep error text 14px+ and semibold)
+ *   ink on crimson #bd2d53 4.6:1. Ink on teal #204149 9.0:1.
+ *   Crimson is a fill only. As text on green it fails.
+ * Cream sections: --cream-ink on --cream 15.6:1, --cream-muted 6.3:1.
+ */
+:root {
+  /* Dark base */
+  --bg: #213535; /* site gradient, middle */
+  --deep: #121a17; /* site gradient, top: sunken wells, bars */
+  --abyss: #001314; /* site gradient, bottom */
+  --ink: #eae6da;
+  --muted: rgba(234, 230, 218, 0.68);
+  --faint: rgba(234, 230, 218, 0.38); /* decorative only, never text people need */
+  --soft: rgba(234, 230, 218, 0.07);
+  --rule: rgba(234, 230, 218, 0.14);
+  --rule-strong: rgba(234, 230, 218, 0.26);
+  --glass: rgba(234, 230, 218, 0.09);
+
+  /* Accents */
+  --crimson: #bd2d53;
+  --crimson-hover: #cf3a60;
+  --crimson-tint: rgba(189, 45, 83, 0.12); /* "now" row wash. Ink 12.3:1, muted 5.6:1 on it */
+  --teal: #204149;
+  --gold: #eecd7a;
+  --teal-light: #6fb4bb; /* teal lifted for marks on green (6.9:1). Brand teal disappears there */
+  --bloom: #f28ba8; /* the pink of the UnConference flowers. Small accents, never body text blocks */
+  --stage: #1d4a4c; /* the teal stage floor, for glows */
+
+  /* Status */
+  --success: #7fcf9f;
+  --warning: #e8b65c;
+  --error: #f2788f;
+
+  /* Light (cream) sections */
+  --cream: #fdfdf5;
+  --cream-card: #eae7d9;
+  --cream-rule: #d6d0b8;
+  --cream-ink: #162220;
+  --cream-muted: rgba(22, 34, 32, 0.66);
+
+  /* Layout */
+  --frame: 1280px;
+  --gutter: 16px;
+  --bar-h: 56px;
+  --tab-h: 64px;
+
+  /* Signature offset shadow distance */
+  --offset: 6px;
+
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* Legacy aliases so pages not yet redone keep working. */
+  --text: var(--ink);
+  --surface-deep: var(--deep);
+  --surface: rgba(234, 230, 218, 0.04);
+  --hairline: var(--rule);
+  --cta: var(--crimson);
+  --cta-hover: var(--crimson-hover);
+
+  color-scheme: dark;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --gutter: 32px;
+    --bar-h: 64px;
+    --offset: 10px;
+  }
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-deep: var(--deep);
+  --color-abyss: var(--abyss);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-faint: var(--faint);
+  --color-soft: var(--soft);
+  --color-rule: var(--rule);
+  --color-rule-strong: var(--rule-strong);
+  --color-glass: var(--glass);
+  --color-crimson: var(--crimson);
+  --color-crimson-hover: var(--crimson-hover);
+  --color-crimson-tint: var(--crimson-tint);
+  --color-teal: var(--teal);
+  --color-gold: var(--gold);
+  --color-teal-light: var(--teal-light);
+  --color-bloom: var(--bloom);
+  --color-stage: var(--stage);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-error: var(--error);
+  --color-cream: var(--cream);
+  --color-cream-card: var(--cream-card);
+  --color-cream-rule: var(--cream-rule);
+  --color-cream-ink: var(--cream-ink);
+  --color-cream-muted: var(--cream-muted);
+
+  /* legacy */
+  --color-text: var(--ink);
+  --color-surface-deep: var(--deep);
+  --color-surface: var(--surface);
+  --color-hairline: var(--rule);
+  --color-cta: var(--crimson);
+  --color-cta-hover: var(--crimson-hover);
+
+  --font-sans: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-pt-serif), ui-serif, Georgia, serif;
+  /* Mono is only for codes, URLs, emails and receipt IDs (O vs 0, l vs 1).
+     Section numbers and counters use DM Sans with tabular nums (`num`). */
+  --font-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+
+  /* Type scale. Display sizes are fluid; body stays 16-20px. */
+  --text-eyebrow: 11px;
+  --text-eyebrow--line-height: 16px;
+  --text-eyebrow--letter-spacing: 0.16em;
+  --text-display: clamp(34px, 5.4vw, 68px);
+  --text-display--line-height: 1.04;
+  --text-display--letter-spacing: -0.02em;
+  --text-headline: clamp(26px, 3.2vw, 40px);
+  --text-headline--line-height: 1.08;
+  --text-headline--letter-spacing: -0.015em;
+  --text-stat: clamp(34px, 4.4vw, 60px);
+  --text-stat--line-height: 1;
+  --text-stat--letter-spacing: -0.02em;
+
+  --radius-input: 10px;
+  --radius-button: 12px;
+  --radius-card: 14px;
+  --radius-panel: 18px;
+
+  --ease-soft: var(--ease-out-soft);
+}
+
+html {
+  background: var(--bg);
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+  scroll-padding-top: calc(var(--bar-h) + 16px);
+}
+
+body {
+  background: var(--bg);
+  /* The UnConference site's dark gradient, top to bottom, pinned to the
+     viewport so every screen gets the full fall from #121a17 to #001314. */
+  background-image: linear-gradient(180deg, #121a17 0%, #213535 30%, #213535 58%, #001314 100%);
+  background-attachment: fixed;
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-weight: 500;
+  overflow-x: clip;
+}
+
+::selection {
+  background: var(--crimson);
+  color: var(--ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+
+.on-cream :focus-visible {
+  outline-color: var(--cream-ink);
+}
+
+/* ---------- Utilities ---------- */
+
+/* Uppercase tracked label. Colour it yourself (usually text-muted). */
+@utility eyebrow {
+  font-family: var(--font-sans);
+  font-size: var(--text-eyebrow);
+  line-height: var(--text-eyebrow--line-height);
+  letter-spacing: var(--text-eyebrow--letter-spacing);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Inner page title (every page except the home hero). One size for all
+   so page openers share a rhythm: eyebrow row, title, lede. */
+@utility page-title {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: clamp(52px, 15vw, 76px);
+  line-height: 0.9;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+  @media (min-width: 768px) {
+    font-size: clamp(76px, 8vw, 104px);
+    line-height: 0.88;
+  }
+}
+
+/* Numbers that line up and don't jump while they change. */
+@utility num {
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* The centred page frame. Every section aligns to it. */
+@utility frame {
+  width: 100%;
+  max-width: calc(var(--frame) + var(--gutter) * 2);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+/* TPF signature: hard crimson offset shadow. Never combine with a border. */
+@utility shadow-offset {
+  box-shadow: var(--offset) var(--offset) 0 var(--crimson);
+}
+
+/* Lift on hover, flatten on press. Pair with shadow-offset. */
+@utility lift {
+  transition:
+    transform 220ms var(--ease-out-soft),
+    box-shadow 220ms var(--ease-out-soft),
+    background-color 220ms var(--ease-out-soft);
+  @media (hover: hover) {
+    &:hover {
+      transform: translate(-3px, -3px);
+      box-shadow: calc(var(--offset) + 3px) calc(var(--offset) + 3px) 0 var(--crimson);
+    }
+  }
+  &:active {
+    transform: translate(0, 0);
+    box-shadow: 0 0 0 var(--crimson);
+  }
+}
+
+/* Past-event photos, graded toward the palette so mixed shoots read as one set. */
+@utility photo-grade {
+  filter: saturate(0.74) contrast(1.05) brightness(0.94) sepia(0.08);
+}
+
+/* Mono logo: any colour logo becomes flat beige. */
+/* Frosted panel, like the glass slabs on the UnConference stage. Replaces flat
+   bg-deep on cards that sit on the gradient. Muted text stays above 6:1. */
+@utility panel {
+  background:
+    linear-gradient(180deg, rgba(234, 230, 218, 0.07), rgba(234, 230, 218, 0.02)),
+    rgba(18, 26, 23, 0.72);
+  border: 1px solid rgba(234, 230, 218, 0.13);
+  box-shadow:
+    inset 0 1px 0 rgba(234, 230, 218, 0.08),
+    0 28px 56px -28px rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(18px) saturate(1.15);
+  -webkit-backdrop-filter: blur(18px) saturate(1.15);
+}
+
+/* PageBanner placement. Bleed pages: run up behind the top bar. Framed pages:
+   break out of the page frame to full width and cancel the shell's top padding. */
+@utility banner-bleed {
+  margin-top: calc(-1 * var(--bar-h));
+  padding-top: var(--bar-h);
+}
+@utility banner-framed {
+  margin-inline: calc(50% - 50vw);
+  padding-inline: calc(50vw - 50%);
+  margin-top: calc(-1 * (var(--bar-h) + 40px));
+  padding-top: calc(var(--bar-h) + 40px);
+  @media (width >= 48rem) {
+    margin-top: calc(-1 * (var(--bar-h) + 80px));
+    padding-top: calc(var(--bar-h) + 80px);
+  }
+}
+
+@utility logo-mono {
+  filter: brightness(0) invert(0.93) sepia(0.14);
+}
+
+/* Fade content out at the left/right edges (marquees). */
+@utility fade-x {
+  mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+}
+
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* ---------- Page shell ---------- */
+
+/* Pages sit in the frame by default. A page whose top element has
+   data-bleed takes the full width and manages its own frame. */
+.page-shell {
+  width: 100%;
+  max-width: calc(var(--frame) + var(--gutter) * 2);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+  padding-top: calc(var(--bar-h) + 40px);
+  padding-bottom: 64px;
+}
+@media (min-width: 768px) {
+  .page-shell {
+    padding-top: calc(var(--bar-h) + 80px);
+    padding-bottom: 96px;
+  }
+}
+/* Next keeps visited pages mounted but hidden (React Activity sets an inline
+   display:none). Ignore those, or a hidden bleed page (the chat) would strip
+   the padding from the framed page you navigated to. */
+.page-shell:has(> [data-bleed]:not([style*="display: none"])) {
+  max-width: none;
+  padding-inline: 0;
+  padding-top: var(--bar-h);
+  padding-bottom: 0;
+}
+
+/* ---------- Keyframes ---------- */
+
+/* Podcast "now playing" equaliser bars. */
+@keyframes eq {
+  0%,
+  100% {
+    transform: scaleY(0.3);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+}
+
+@keyframes live-ping {
+  0% {
+    transform: scale(1);
+    opacity: 0.65;
+  }
+  70%,
+  100% {
+    transform: scale(2.8);
+    opacity: 0;
+  }
+}
+
+@keyframes marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes sheet-up {
+  from {
+    transform: translateY(24px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fade-up {
+  from {
+    transform: translateY(8px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* ---------- Signature motion (Home) ---------- */
+
+/* Kinetic text (app/_chat/motion/kinetic-greeting.tsx). Hidden, not removed,
+   until GSAP has split it, so the box holds its size and there is no flash
+   of unsplit text. The fail-safe shows it if JS never gets there. */
+.kinetic:not([data-split]) {
+  visibility: hidden;
+  animation: kinetic-failsafe 0s linear 2.5s forwards;
+}
+@keyframes kinetic-failsafe {
+  to {
+    visibility: visible;
+  }
+}
+/* Line masks clip at the line box; give descenders, accents and the tilt room. */
+.kgline-mask {
+  padding: 0.1em 0.08em 0.2em;
+  margin: -0.1em -0.08em -0.2em;
+}
+
+/* Living backdrop (app/_chat/motion/backdrop.tsx). Radial gradients, no blur
+   filters; only transform and opacity move. */
+.bd {
+  background: var(--bg);
+}
+.bd-field,
+.bd-swell {
+  position: absolute;
+  border-radius: 50%;
+  will-change: transform;
+}
+.bd-field {
+  animation: bd-drift-a 34s ease-in-out infinite alternate;
+}
+.bd-deep {
+  width: 120vmax;
+  height: 120vmax;
+  left: -30vmax;
+  top: 10vmax;
+  background: radial-gradient(closest-side, rgba(32, 65, 73, 0.85), rgba(32, 65, 73, 0) 100%);
+  animation-name: bd-drift-c;
+  animation-duration: 46s;
+}
+.bd-teal {
+  width: 70vmax;
+  height: 70vmax;
+  right: -32vmax;
+  top: 4vmax;
+  background: radial-gradient(closest-side, rgba(111, 180, 187, 0.16), rgba(111, 180, 187, 0) 100%);
+  animation-name: bd-drift-b;
+  animation-duration: 38s;
+}
+.bd-warm {
+  position: absolute;
+  inset: 0;
+  opacity: 0.8;
+  transition: opacity 1.6s var(--ease-out-soft);
+}
+.bd-crimson {
+  width: 80vmax;
+  height: 80vmax;
+  left: -38vmax;
+  top: -26vmax;
+  background: radial-gradient(closest-side, rgba(189, 45, 83, 0.34), rgba(189, 45, 83, 0) 100%);
+  animation-duration: 30s;
+}
+.bd-gold {
+  width: 60vmax;
+  height: 60vmax;
+  right: -26vmax;
+  bottom: -18vmax;
+  background: radial-gradient(closest-side, rgba(238, 205, 122, 0.13), rgba(238, 205, 122, 0) 100%);
+  animation-name: bd-drift-b;
+  animation-duration: 42s;
+  animation-direction: alternate-reverse;
+}
+/* The warm swell: rises from below the composer while the assistant thinks. */
+.bd-swell {
+  width: 120vmax;
+  height: 80vmax;
+  left: calc(50% - 60vmax);
+  bottom: -22vmax;
+  opacity: 0;
+  transform: translate3d(0, 12%, 0) scale(0.8);
+  transition:
+    opacity 1.4s var(--ease-out-soft),
+    transform 1.8s var(--ease-out-soft);
+}
+.bd-swell-core {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background:
+    radial-gradient(closest-side at 50% 55%, rgba(238, 205, 122, 0.2), rgba(238, 205, 122, 0) 60%),
+    radial-gradient(closest-side, rgba(189, 45, 83, 0.44), rgba(189, 45, 83, 0) 100%);
+  animation: bd-breathe 3.2s ease-in-out infinite alternate;
+  will-change: transform, opacity;
+}
+.bd[data-mood="thinking"] .bd-warm {
+  opacity: 1;
+}
+.bd[data-mood="thinking"] .bd-swell {
+  opacity: 1;
+  transform: translate3d(0, 0, 0) scale(1);
+}
+.bd[data-mood="streaming"] .bd-swell {
+  opacity: 0.35;
+  transform: translate3d(0, 6%, 0) scale(0.9);
+  transition-duration: 2.4s;
+}
+.bd[data-paused] * {
+  animation-play-state: paused;
+}
+/* Film grain: one static tile, painted once. */
+.bd-grain {
+  position: absolute;
+  inset: 0;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.92 0 0 0 0 0.9 0 0 0 0 0.85 0 0 0 1.6 -0.35'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+}
+@keyframes bd-drift-a {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(18vmax, 14vmax, 0) scale(1.12);
+  }
+}
+@keyframes bd-drift-b {
+  from {
+    transform: translate3d(0, 0, 0) scale(1.05);
+  }
+  to {
+    transform: translate3d(-16vmax, 20vmax, 0) scale(0.92);
+  }
+}
+@keyframes bd-drift-c {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(14vmax, -12vmax, 0) scale(1.08);
+  }
+}
+@keyframes bd-breathe {
+  from {
+    transform: scale(0.94);
+    opacity: 0.75;
+  }
+  to {
+    transform: scale(1.06);
+    opacity: 1;
+  }
+}
+
+/* Tab view transitions (app/template.tsx). The bars hold still. */
+::view-transition {
+  pointer-events: none;
+}
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+}
+::view-transition-group(site-header),
+::view-transition-group(tab-bar) {
+  animation: none;
+  z-index: 100;
+}
+::view-transition-old(site-header),
+::view-transition-old(tab-bar) {
+  display: none;
+}
+::view-transition-new(site-header),
+::view-transition-new(tab-bar) {
+  animation: none;
+}
+::view-transition-group(.tab-page) {
+  animation-duration: 280ms;
+  animation-timing-function: var(--ease-out-soft);
+}
+::view-transition-old(.tab-page) {
+  animation: vt-out 170ms cubic-bezier(0.4, 0, 1, 1) both;
+}
+::view-transition-new(.tab-page) {
+  animation: vt-in 280ms var(--ease-out-soft) 50ms both;
+}
+@keyframes vt-out {
+  to {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
+@keyframes vt-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+
+/* Desktop cursor (components/motion/cursor.tsx). Fine pointer only. */
+.cursor-root {
+  display: none;
+}
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .cursor-root[data-enabled] {
+    display: block;
+    position: fixed;
+    inset: 0 auto auto 0;
+    z-index: 70;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.25s var(--ease-out-soft);
+  }
+  .cursor-root[data-enabled][data-visible="true"] {
+    opacity: 1;
+  }
+}
+.cursor-ring,
+.cursor-dot {
+  position: absolute;
+  top: 0;
+  left: 0;
+  will-change: transform;
+}
+.cursor-ring {
+  width: 32px;
+  height: 32px;
+  margin: -16px 0 0 -16px;
+}
+.cursor-ring > span {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  transition: opacity 0.25s var(--ease-out-soft);
+}
+.cursor-ring-base {
+  border: 1px solid rgba(234, 230, 218, 0.5);
+}
+.cursor-ring-hot {
+  border: 1px solid rgba(207, 58, 96, 0.9);
+  background: rgba(189, 45, 83, 0.16);
+  opacity: 0;
+}
+.cursor-root[data-mode="link"] .cursor-ring-base {
+  opacity: 0;
+}
+.cursor-root[data-mode="link"] .cursor-ring-hot {
+  opacity: 1;
+}
+.cursor-root[data-mode="text"] .cursor-ring {
+  opacity: 0.35;
+}
+.cursor-dot > span {
+  position: absolute;
+  transition:
+    opacity 0.2s var(--ease-out-soft),
+    transform 0.25s var(--ease-out-soft);
+}
+.cursor-dot-core {
+  width: 8px;
+  height: 8px;
+  left: -4px;
+  top: -4px;
+  border-radius: 50%;
+  background: var(--ink);
+  box-shadow: 0 0 0 1px rgba(14, 24, 22, 0.35);
+}
+.cursor-caret {
+  width: 2px;
+  height: 22px;
+  left: -1px;
+  top: -11px;
+  border-radius: 1px;
+  background: var(--gold);
+  opacity: 0;
+  transform: scaleY(0.4);
+}
+.cursor-root[data-mode="link"] .cursor-dot-core {
+  transform: scale(0.75);
+}
+.cursor-root[data-mode="text"] .cursor-dot-core {
+  opacity: 0;
+  transform: scale(0.4);
+}
+.cursor-root[data-mode="text"] .cursor-caret {
+  opacity: 1;
+  transform: scaleY(1);
+}
+
+/* Top bar: a deeper wash and brighter hairline as the page scrolls under it. */
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .header-scrolled {
+      animation: header-scrolled linear both;
+      animation-timeline: scroll(root block);
+      animation-range: 0 96px;
+    }
+  }
+}
+@keyframes header-scrolled {
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+  .bd *,
+  .bd-swell {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
