@@ -801,7 +801,7 @@ export const copy = {
     /** After YC's Requests for Startups. Second line in gold. */
     title: ["Requests", "for Builders"],
     /** What this is, in the spirit of YC's RFS intro. Kept to two sentences. */
-    body: "Problems that founders, operators and VCs want solved, in their own words. Pick the one that excites you and build it in four hours at Builder’s Day.",
+    body: "Problems from founders, investors and operators at the frontier.",
     bg: "/brand/hero/unconf-hero-bg.avif",
     stats: { problems: "problems", people: "See who's asking", hours: "hours to build" },
     browse: "Browse the requests",
