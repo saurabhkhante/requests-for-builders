@@ -103,7 +103,7 @@ export function TopBar({
           aria-controls="landing-menu"
           aria-label={menuLabel}
           onClick={() => setOpen((v) => !v)}
-          className="ml-auto inline-flex size-10 items-center justify-center text-ink md:hidden"
+          className="ml-auto inline-flex size-11 items-center justify-center text-ink md:hidden"
         >
           {open ? (
             <CloseIcon className="size-5" />

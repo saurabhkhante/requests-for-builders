@@ -82,7 +82,7 @@ export function TpfFooter() {
                       <a
                         href={l.href}
                         {...linkProps(l.kind)}
-                        className="inline-flex min-h-9 items-center text-[15px] text-muted transition-colors duration-200 ease-soft hover:text-ink"
+                        className="inline-flex min-h-11 items-center text-[15px] md:min-h-9 text-muted transition-colors duration-200 ease-soft hover:text-ink"
                       >
                         {l.label}
                       </a>
@@ -95,7 +95,7 @@ export function TpfFooter() {
         </div>
 
         <div className="mt-14 flex flex-wrap items-center gap-x-6 gap-y-4 border-t border-rule pt-8 md:mt-20">
-          <p className="text-[13px] text-muted">Creative Partners</p>
+          <p className="text-[14px] text-muted">Creative Partners</p>
           <ul className="flex flex-wrap items-center gap-x-6 gap-y-4">
             {CREATIVE.map((c) => (
               <li key={c.name}>

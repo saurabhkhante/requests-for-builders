@@ -27,7 +27,7 @@
   --deep: #121a17; /* site gradient, top: sunken wells, bars */
   --abyss: #001314; /* site gradient, bottom */
   --ink: #eae6da;
-  --muted: rgba(234, 230, 218, 0.68);
+  --muted: rgba(234, 230, 218, 0.74);
   --faint: rgba(234, 230, 218, 0.38); /* decorative only, never text people need */
   --soft: rgba(234, 230, 218, 0.07);
   --rule: rgba(234, 230, 218, 0.14);
@@ -54,12 +54,12 @@
   --cream-card: #eae7d9;
   --cream-rule: #d6d0b8;
   --cream-ink: #162220;
-  --cream-muted: rgba(22, 34, 32, 0.66);
+  --cream-muted: rgba(22, 34, 32, 0.72);
 
   /* Layout */
   --frame: 1280px;
   --gutter: 16px;
-  --bar-h: 56px;
+  --bar-h: 64px; /* the phone header is h-16 too */
   --tab-h: 64px;
 
   /* Signature offset shadow distance */
@@ -129,9 +129,9 @@
   --font-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
 
   /* Type scale. Display sizes are fluid; body stays 16-20px. */
-  --text-eyebrow: 11px;
+  --text-eyebrow: 12px;
   --text-eyebrow--line-height: 16px;
-  --text-eyebrow--letter-spacing: 0.16em;
+  --text-eyebrow--letter-spacing: 0.13em;
   --text-display: clamp(34px, 5.4vw, 68px);
   --text-display--line-height: 1.04;
   --text-display--letter-spacing: -0.02em;

@@ -72,8 +72,8 @@ export function Monogram({ person, className }: { person: Person; className?: st
 export function Tags({ r, className }: { r: Request; className?: string }) {
   return (
     <span className={cn("flex flex-wrap items-center gap-1.5", className)}>
-      <span className="rounded-full border border-current/25 px-2.5 py-1 text-[12px] leading-none">{TRACK.get(r.track)}</span>
-      {r.moonshot ? <span className="rounded-full bg-gold px-2.5 py-1 text-[12px] leading-none font-semibold text-cream-ink">{copy.board.moonshotTag}</span> : null}
+      <span className="rounded-full border border-current/25 px-2.5 py-1 text-[13px] leading-none">{TRACK.get(r.track)}</span>
+      {r.moonshot ? <span className="rounded-full bg-gold px-2.5 py-1 text-[13px] leading-none font-semibold text-cream-ink">{copy.board.moonshotTag}</span> : null}
     </span>
   );
 }
@@ -95,13 +95,13 @@ export function RequestCardBody({ r }: { r: Request }) {
         <span className="eyebrow pt-1 text-muted">RFS {NUMBER.get(r.id)}</span>
         <Tags r={r} className="justify-end text-muted" />
       </span>
-      <span className="mt-5 block font-serif text-[22px] leading-[1.15] font-bold text-ink md:text-[24px]">{r.title}</span>
-      <span className="mt-3 line-clamp-2 text-[15px] leading-relaxed text-ink/70 sm:line-clamp-3">{r.pitch ?? r.request}</span>
-      <span className="mt-auto flex items-center gap-3 border-t border-rule pt-4 [margin-top:max(auto,20px)]">
-        <Monogram person={p} className="size-9 text-[13px]" />
+      <span className="mt-5 line-clamp-3 font-serif text-[22px] leading-[1.15] font-bold text-ink md:text-[24px]">{r.title}</span>
+      <span className="mt-3 mb-5 line-clamp-3 text-[16px] leading-relaxed text-ink/75 md:text-[15px]">{r.pitch ?? r.request}</span>
+      <span className="mt-auto flex items-center gap-3 border-t border-rule pt-4">
+        <Monogram person={p} className="size-10 text-[14px]" />
         <span className="min-w-0 flex-1">
           <span className="block truncate text-[15px] font-semibold text-ink">{p.name}</span>
-          {subline(p) ? <span className="block truncate text-[13px] text-muted">{subline(p)}</span> : null}
+          {subline(p) ? <span className="block truncate text-[14px] text-muted">{subline(p)}</span> : null}
         </span>
         <span aria-hidden="true" className="text-[20px] text-muted transition-transform duration-300 ease-soft group-hover:translate-x-1 group-hover:text-ink">
           →

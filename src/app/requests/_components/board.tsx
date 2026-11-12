@@ -31,7 +31,7 @@ function Chip({ active, onClick, children }: { active: boolean; onClick: () => v
       aria-pressed={active}
       onClick={onClick}
       className={cn(
-        "shrink-0 rounded-full border px-3.5 py-2 text-[14px] leading-none whitespace-nowrap transition-colors duration-200 ease-soft",
+        "inline-flex min-h-11 shrink-0 items-center rounded-full border px-4 text-[15px] leading-none whitespace-nowrap md:min-h-0 md:px-3.5 md:py-2 md:text-[14px] transition-colors duration-200 ease-soft",
         active ? "border-ink bg-ink text-cream-ink" : "border-rule-strong text-ink/80 hover:border-ink/60 hover:text-ink",
       )}
     >
@@ -218,8 +218,8 @@ export function Board() {
                       className={cn("size-16 bg-cream-card text-[20px] ring-2 ring-offset-2 ring-offset-cream", active ? "ring-cream-ink" : "ring-transparent")}
                     />
                     <span className="flex flex-col gap-1">
-                      <span className={cn("line-clamp-2 text-[13px] leading-tight text-cream-ink", active && "font-semibold")}>{p.name}</span>
-                      {subline(p) ? <span className="line-clamp-2 text-[11px] leading-[1.3] text-cream-muted">{subline(p)}</span> : null}
+                      <span className={cn("line-clamp-2 text-[14px] leading-tight text-cream-ink", active && "font-semibold")}>{p.name}</span>
+                      {subline(p) ? <span className="line-clamp-2 text-[12.5px] leading-[1.3] text-cream-muted">{subline(p)}</span> : null}
                     </span>
                   </button>
                 </li>
