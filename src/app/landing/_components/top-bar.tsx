@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState, type AnchorHTMLAttributes } from "react";
+import { useEffect, useRef, useState, type AnchorHTMLAttributes } from "react";
 
 import { CloseIcon } from "@/components/icons";
 import { HashLink } from "@/components/shell/hash-link";
@@ -36,6 +36,7 @@ export function TopBar({
   publicUrl?: string;
 }) {
   const [open, setOpen] = useState(false);
+  const header = useRef<HTMLElement>(null);
   const [active, setActive] = useState<string | null>(null);
 
   // Scroll spy: the link whose section crosses the upper third of the screen.
@@ -65,12 +66,22 @@ export function TopBar({
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+    // Phones: a tap outside the bar or a real scroll closes the menu.
+    const onDown = (e: PointerEvent) => !header.current?.contains(e.target as Node) && setOpen(false);
+    const y0 = window.scrollY;
+    const onScroll = () => Math.abs(window.scrollY - y0) > 24 && setOpen(false);
     window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    document.addEventListener("pointerdown", onDown);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.removeEventListener("pointerdown", onDown);
+      window.removeEventListener("scroll", onScroll);
+    };
   }, [open]);
 
   return (
-    <header className="fixed inset-x-0 top-0 z-40 mx-auto w-[95%] max-w-[1180px] rounded-b-[20px] bg-black/20 text-ink backdrop-blur-[60px] lg:w-[78%]">
+    <header ref={header} className="fixed inset-x-0 top-0 z-40 mx-auto w-[95%] max-w-[1180px] rounded-b-[20px] bg-black/20 text-ink backdrop-blur-[60px] lg:w-[78%]">
       <div className="relative flex h-16 items-center pr-[76px] pl-5 md:h-[72px] md:pr-[92px] md:pl-8">
         <BarLink href="#landing-hero" publicUrl={publicUrl} aria-label="The Product Folks, back to top" className="shrink-0">
           <Image src={TPF.wordmark.src} alt="The Product Folks" width={TPF.wordmark.w} height={TPF.wordmark.h} preload className="h-9 w-auto md:h-11" />

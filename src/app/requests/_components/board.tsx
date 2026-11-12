@@ -19,7 +19,7 @@ const PEOPLE_PREVIEW = 8;
 const TYPES: readonly PersonType[] = ["Founder", "Operator", "VC"];
 const TYPE_LABEL: Record<PersonType, string> = { Founder: "Founders", Operator: "Operators", VC: "VCs" };
 /** Phones show the grid a page at a time ("Load more"); md and up always show everything. */
-const PAGE = 6;
+const PAGE = 10;
 /** Height of the fixed site header the filter bar sticks under (top-16 / md:top-[72px]). */
 const headerH = () => (window.innerWidth >= 768 ? 72 : 64);
 
@@ -192,7 +192,7 @@ export function Board() {
     <>
       {/* ---------- Who's asking (cream, so the page alternates like /landing) ---------- */}
       <section id="people" aria-labelledby="people-title" className="on-cream scroll-mt-20 bg-cream text-cream-ink">
-        <div className="frame py-14 md:py-20">
+        <div className="frame py-10 md:py-20">
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
               <h2 id="people-title" className="font-serif text-[clamp(32px,4.4vw,52px)] leading-[1] font-bold tracking-[-0.02em] text-cream-ink">
@@ -202,7 +202,7 @@ export function Board() {
             <p className="text-[15px] text-cream-muted">{copy.people.body}</p>
           </div>
           {/* Phones: everyone in one swipeable row, so the problems start sooner. */}
-          <ul className="-mx-4 mt-7 flex snap-x items-start gap-1 overflow-x-auto px-4 pb-1 [mask-image:linear-gradient(90deg,#000_82%,transparent)] [scrollbar-width:none] sm:hidden">
+          <ul className="-mx-4 mt-5 flex snap-x items-start gap-1 overflow-x-auto px-4 pb-1 [mask-image:linear-gradient(90deg,#000_82%,transparent)] [scrollbar-width:none] sm:hidden">
             {ASKERS.map((p) => {
               const active = person === p.id;
               return (
@@ -226,6 +226,7 @@ export function Board() {
               );
             })}
           </ul>
+          <p className="mt-2 text-[13px] text-cream-muted sm:hidden">{copy.people.swipe(ASKERS.length)}</p>
           <ul className="mt-8 hidden auto-rows-fr gap-2.5 sm:grid sm:grid-cols-2 lg:grid-cols-4">
             {(allPeople ? ASKERS : ASKERS.slice(0, PEOPLE_PREVIEW)).map((p) => {
               const active = person === p.id;
@@ -336,9 +337,8 @@ export function Board() {
           </div>
 
           <div className="mt-5 flex items-center justify-between gap-4 text-[14px] text-muted" aria-live="polite">
-            {/* Count only while filtering; the full board shows no totals (the list keeps growing). */}
             <span>
-              {filtered ? copy.board.showing(shown.length) : null}
+              {copy.board.showing(shown.length)}
               {filtered && person ? ` from ${PERSON.get(person)?.name}` : ""}
             </span>
             {/* On phones the Track row scrolls sideways, so Clear lives here where it's always in reach. */}
