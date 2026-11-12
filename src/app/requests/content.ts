@@ -60,7 +60,7 @@ export const people: readonly Person[] = [
   { id: "nikkitha", name: "Nikkitha Shanker", role: "Co-founder & CEO", company: "SuperBryn", type: "Founder", photo: "nikkitha.jpg" },
   { id: "deepak", name: "Deepak Abbot", role: "Co-founder", company: "indiagold", type: "Founder", photo: "deepak.jpg" },
   { id: "saurabh-plum", name: "Saurabh Arora", role: "Co-founder & CTO", company: "Plum", type: "Founder", photo: "saurabh.jpg" },
-  { id: "nitin", name: "Nitin Mittal", role: "", company: "Microsoft", type: "Operator", photo: "nitin.jpg" },
+  { id: "nitin", name: "Nitin Mittal", role: "Head of Digital Natives", company: "Microsoft", type: "Operator", photo: "nitin.jpg" },
   { id: "nikhil", name: "Nikhil Jois", role: "Growth", company: "Bureau", type: "Operator", photo: "nikhil.jpg" },
   { id: "yogesh", name: "Yogesh Doravari", role: "Lead Product Manager", company: "Roblox", type: "Operator", photo: "yogesh.jpg" },
   { id: "vivek", name: "Vivek Raju", role: "Investor Communications Strategist", company: "Deck Rooster", type: "Operator", photo: "vivek.jpg", x: "vivekraju93" },
