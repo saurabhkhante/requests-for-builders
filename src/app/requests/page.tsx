@@ -161,8 +161,10 @@ function Pass() {
           <p className="mt-5 max-w-[44ch] text-[17px] leading-relaxed text-ink/85 md:text-[19px]">{c.pass.body}</p>
         </Reveal>
         <Reveal delay={0.1} className="mt-9 flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-6">
-          {/* To the Builder's Day page on the main site; _top leaves the iframe. */}
-          <NotchLink href={PUBLIC_URLS.landing} target="_top">
+          {/* Straight to the Builder's Pass on the Builder's Day page (the Webflow
+              embed passes #pass into its frame, which then plays an arrival
+              animation); _top leaves this iframe. */}
+          <NotchLink href={`${PUBLIC_URLS.landing}#pass`} target="_top">
             {c.pass.cta}
           </NotchLink>
         </Reveal>
