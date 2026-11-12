@@ -1,9 +1,9 @@
 "use client";
 
-import { AnimatePresence, motion } from "motion/react";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { animate, AnimatePresence, motion, useMotionValue } from "motion/react";
+import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 
-import { CloseIcon, SearchIcon } from "@/components/icons";
+import { ChevronLeftIcon, ChevronRightIcon, CloseIcon, SearchIcon } from "@/components/icons";
 import { EASE } from "@/components/motion/ease";
 import { HashLink } from "@/components/shell/hash-link";
 import { PUBLIC_URLS } from "@/lib/public-urls";
@@ -141,13 +141,42 @@ export function Board() {
     };
   }, []);
 
-  const open = (id: string | null) => {
-    setOpenId(id);
+  // Opening from a card adds a history entry, so the phone's back button (or swipe back)
+  // closes the detail instead of leaving the page. Deep links and prev/next only replace it.
+  const pushed = useRef(false);
+  const urlFor = (id: string | null) => {
     const params = new URLSearchParams(window.location.search);
     params.delete("p");
     const search = params.size ? `?${params}` : "";
-    window.history.replaceState(null, "", window.location.pathname + search + (id ? `#${id}` : ""));
+    return window.location.pathname + search + (id ? `#${id}` : "");
   };
+  const open = (id: string | null, how: "push" | "replace" = "replace") => {
+    setOpenId(id);
+    if (how === "push" && id) {
+      window.history.pushState({ rfs: id }, "", urlFor(id));
+      pushed.current = true;
+    } else window.history.replaceState(null, "", urlFor(id));
+  };
+  const close = () => {
+    if (pushed.current) {
+      pushed.current = false;
+      window.history.back(); // popstate below closes it
+    } else open(null);
+  };
+  useEffect(() => {
+    // Back/forward between our own entries: the hash says what's open.
+    window.history.scrollRestoration = "manual";
+    const onPop = () => {
+      const id = window.location.hash.slice(1);
+      if (NUMBER.has(id)) setOpenId(id);
+      else {
+        pushed.current = false;
+        setOpenId(null);
+      }
+    };
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+  }, []);
 
   // A person view shows all of that person's requests, so it replaces the other filters
   // (and picking a track or type leaves the person view). Stacking them gave empty results.
@@ -333,7 +362,7 @@ export function Board() {
                     exit={{ opacity: 0, scale: 0.97 }}
                     transition={{ duration: 0.3, ease: EASE }}
                   >
-                    <Card r={r} onOpen={() => open(r.id)} />
+                    <Card r={r} onOpen={() => open(r.id, "push")} />
                   </motion.li>
                 ))}
               </AnimatePresence>
@@ -359,7 +388,13 @@ export function Board() {
         </div>
       </section>
 
-      <Detail id={openId} onClose={() => open(null)} />
+      <Detail
+        id={openId}
+        // Prev/next walk the list as it's filtered now; a deep link outside it walks the whole board.
+        list={openId && shown.some((r) => r.id === openId) ? shown : VISIBLE}
+        onStep={(id) => open(id)}
+        onClose={close}
+      />
     </>
   );
 }
@@ -372,10 +407,29 @@ function Card({ r, onOpen }: { r: Request; onOpen: () => void }) {
   );
 }
 
-function Detail({ id, onClose }: { id: string | null; onClose: () => void }) {
+function Detail({ id, list, onStep, onClose }: { id: string | null; list: readonly Request[]; onStep: (id: string) => void; onClose: () => void }) {
   const ref = useRef<HTMLDialogElement>(null);
+  const body = useRef<HTMLDivElement>(null);
   const r = id ? VISIBLE.find((x) => x.id === id) : undefined;
   const p = r ? PERSON.get(r.by) : undefined;
+  const i = r ? list.findIndex((x) => x.id === r.id) : -1;
+  const prev = i > 0 ? list[i - 1] : undefined;
+  const next = i >= 0 && i < list.length - 1 ? list[i + 1] : undefined;
+  // Which way the last step went, so the new request slides in from that side.
+  const [dir, setDir] = useState(0);
+  const step = (to: Request | undefined, d: number) => {
+    if (!to) return;
+    setDir(d);
+    onStep(to.id);
+  };
+  // Swipe sideways and drag-to-dismiss are for touch; on desktop dragging would fight text selection.
+  const touch = useSyncExternalStore(
+    () => () => {},
+    () => window.matchMedia("(pointer: coarse)").matches,
+    () => false,
+  );
+  // Drag the top of the sheet down to close it.
+  const y = useMotionValue(0);
 
   useEffect(() => {
     const d = ref.current;
@@ -383,10 +437,30 @@ function Detail({ id, onClose }: { id: string | null; onClose: () => void }) {
     if (r && !d.open) d.showModal();
     if (!r && d.open) d.close();
     document.documentElement.style.overflow = r ? "hidden" : "";
+    if (!r) y.set(0);
     return () => {
       document.documentElement.style.overflow = "";
     };
-  }, [r]);
+  }, [r, y]);
+
+  // A new request starts at its top.
+  useEffect(() => {
+    body.current?.scrollTo({ top: 0 });
+  }, [id]);
+
+  // Arrow keys step through on desktop.
+  useEffect(() => {
+    if (!r) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "ArrowRight") step(next, 1);
+      if (e.key === "ArrowLeft") step(prev, -1);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  });
+
+  const navBtn =
+    "inline-flex size-11 items-center justify-center rounded-full text-cream-ink transition-colors hover:bg-cream-card disabled:pointer-events-none disabled:opacity-30";
 
   return (
     <dialog
@@ -394,72 +468,118 @@ function Detail({ id, onClose }: { id: string | null; onClose: () => void }) {
       aria-labelledby="rfs-detail-title"
       onClose={onClose}
       onClick={(e) => e.target === e.currentTarget && onClose()}
-      className="m-0 mt-auto h-[92svh] max-h-none w-full max-w-none overflow-hidden rounded-t-[20px] bg-cream p-0 text-cream-ink backdrop:bg-black/70 backdrop:backdrop-blur-sm md:m-auto md:h-auto md:max-h-[86svh] md:w-[min(680px,calc(100vw-48px))] md:rounded-[0_0_24px_0]"
+      className="m-0 mt-auto h-[92svh] max-h-none w-full max-w-none overflow-visible bg-transparent p-0 text-cream-ink backdrop:bg-black/70 backdrop:backdrop-blur-sm md:m-auto md:h-auto md:max-h-[86svh] md:w-[min(680px,calc(100vw-48px))]"
     >
       {r && p ? (
-        <div className="on-cream flex h-full max-h-[inherit] flex-col">
-          <div className="flex items-center justify-between gap-4 border-b border-cream-rule px-5 py-3.5 md:px-8">
-            <span className="eyebrow text-cream-muted">RFS {NUMBER.get(r.id)}</span>
-            <button
-              type="button"
-              onClick={onClose}
-              aria-label={copy.detail.close}
-              className="inline-flex size-10 items-center justify-center rounded-full text-cream-ink transition-colors hover:bg-cream-card"
-            >
-              <CloseIcon className="size-5" />
-            </button>
-          </div>
-          <div className="flex-1 overflow-y-auto px-5 pt-6 pb-8 md:px-8 md:pt-8">
-            <Tags r={r} className="text-cream-muted" />
-            <h3 id="rfs-detail-title" className="mt-4 font-serif text-[clamp(28px,4vw,38px)] leading-[1.08] font-bold tracking-[-0.02em]">
-              {r.title}
-            </h3>
-            <div className="mt-6 flex items-center gap-3.5">
-              <Monogram person={p} className="size-12 text-[17px]" />
-              <span>
-                <span className="block text-[17px] font-semibold">{p.name}</span>
-                <span className="block text-[14px] text-cream-muted">{[subline(p), p.type && !p.role.toLowerCase().includes(p.type.toLowerCase()) ? p.type : null].filter(Boolean).join(" · ")}</span>
-              </span>
+        <motion.div
+          style={{ y }}
+          className="on-cream flex h-full max-h-[inherit] animate-[sheet-in_0.4s_cubic-bezier(0.22,1,0.36,1)] flex-col overflow-hidden rounded-t-[20px] bg-cream md:animate-[sheet-up_0.3s_cubic-bezier(0.22,1,0.36,1)] md:rounded-[0_0_24px_0]"
+        >
+          {/* Header doubles as the drag handle on phones. */}
+          <motion.div
+            onPan={touch ? (_, info) => y.set(Math.max(0, info.offset.y)) : undefined}
+            onPanEnd={
+              touch
+                ? (_, info) => {
+                    if (info.offset.y > 110 || info.velocity.y > 600) {
+                      animate(y, window.innerHeight, { duration: 0.22, ease: EASE }).then(onClose);
+                    } else animate(y, 0, { type: "spring", stiffness: 500, damping: 40 });
+                  }
+                : undefined
+            }
+            className="shrink-0 touch-none border-b border-cream-rule px-3 pb-2 md:touch-auto md:px-6 md:py-2"
+          >
+            <span aria-hidden="true" className="mx-auto mt-2 mb-1 block h-1 w-10 rounded-full bg-cream-ink/20 md:hidden" />
+            <div className="flex items-center justify-between gap-2">
+              <span className="eyebrow pl-2 text-cream-muted">RFS {NUMBER.get(r.id)}</span>
+              <div className="flex items-center gap-0.5">
+                {list.length > 1 && i >= 0 ? (
+                  <>
+                    <button type="button" onClick={() => step(prev, -1)} disabled={!prev} aria-label={copy.detail.prev} className={navBtn}>
+                      <ChevronLeftIcon className="size-5" />
+                    </button>
+                    <span className="min-w-[4.5rem] text-center text-[14px] text-cream-muted tabular-nums" aria-live="polite">
+                      {copy.detail.position(i + 1, list.length)}
+                    </span>
+                    <button type="button" onClick={() => step(next, 1)} disabled={!next} aria-label={copy.detail.next} className={navBtn}>
+                      <ChevronRightIcon className="size-5" />
+                    </button>
+                  </>
+                ) : null}
+                <button type="button" onClick={onClose} aria-label={copy.detail.close} className={cn(navBtn, "ml-1")}>
+                  <CloseIcon className="size-5" />
+                </button>
+              </div>
             </div>
+          </motion.div>
+          <div ref={body} className="flex-1 overflow-x-hidden overflow-y-auto overscroll-contain">
+            <motion.div
+              key={r.id}
+              initial={dir ? { opacity: 0, x: dir * 56 } : false}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.28, ease: EASE }}
+              drag={touch ? "x" : false}
+              dragDirectionLock
+              dragConstraints={{ left: 0, right: 0 }}
+              dragElastic={0.18}
+              onDragEnd={(_, info) => {
+                if (info.offset.x < -70 || info.velocity.x < -500) step(next, 1);
+                else if (info.offset.x > 70 || info.velocity.x > 500) step(prev, -1);
+              }}
+              className="px-5 pt-6 pb-8 md:px-8 md:pt-8"
+            >
+              <Tags r={r} className="text-cream-muted" />
+              <h3 id="rfs-detail-title" className="mt-4 font-serif text-[clamp(30px,4vw,38px)] leading-[1.08] font-bold tracking-[-0.02em]">
+                {r.title}
+              </h3>
+              <div className="mt-6 flex items-center gap-3.5">
+                <Monogram person={p} className="size-12 text-[17px]" />
+                <span>
+                  <span className="block text-[17px] font-semibold">{p.name}</span>
+                  <span className="block text-[15px] text-cream-muted">{[subline(p), p.type && !p.role.toLowerCase().includes(p.type.toLowerCase()) ? p.type : null].filter(Boolean).join(" · ")}</span>
+                </span>
+              </div>
 
-            {/* Their words first, as a quote. Our framing of a short reply comes after, labelled as ours. */}
-            <p className="eyebrow mt-8 text-cream-muted">{copy.detail.request}</p>
-            <blockquote className="mt-3 border-l-[3px] border-crimson pl-4 text-[17px] leading-relaxed md:text-[18px]">{r.request}</blockquote>
-            {r.pitch ? (
-              <>
-                <p className="eyebrow mt-8 text-cream-muted">{copy.detail.pitch}</p>
-                <p className="mt-3 text-[17px] leading-relaxed md:text-[18px]">{r.pitch}</p>
-              </>
-            ) : null}
+              {/* Their words first, as a quote. Our framing of a short reply comes after, labelled as ours. */}
+              <p className="eyebrow mt-8 text-cream-muted">{copy.detail.request}</p>
+              <blockquote className="mt-3 border-l-[3px] border-crimson pl-4 text-[18px] leading-[1.6]">{r.request}</blockquote>
+              {r.pitch ? (
+                <>
+                  <p className="eyebrow mt-8 text-cream-muted">{copy.detail.pitch}</p>
+                  <p className="mt-3 text-[18px] leading-[1.6]">{r.pitch}</p>
+                </>
+              ) : null}
 
-            {r.waysIn.length ? (
-              <>
-                <p className="eyebrow mt-8 text-cream-muted">{copy.detail.waysIn}</p>
-                <ul className="mt-3 flex flex-col gap-2.5">
-                  {r.waysIn.map((w) => (
-                    <li key={w} className="flex gap-3 text-[16px] leading-relaxed">
-                      <span aria-hidden="true" className="mt-[0.55em] inline-block size-2 shrink-0 rotate-45 bg-crimson" />
-                      {w}
-                    </li>
-                  ))}
-                </ul>
-                <p className="mt-3 text-[13px] text-cream-muted">{r.moonshot ? copy.detail.moonshotNote : copy.detail.waysInNote}</p>
-              </>
-            ) : null}
+              {r.waysIn.length ? (
+                <>
+                  <p className="eyebrow mt-8 text-cream-muted">{copy.detail.waysIn}</p>
+                  <ul className="mt-3 flex flex-col gap-3">
+                    {r.waysIn.map((w) => (
+                      <li key={w} className="flex gap-3 text-[17px] leading-[1.55]">
+                        <span aria-hidden="true" className="mt-[0.6em] inline-block size-2 shrink-0 rotate-45 bg-crimson" />
+                        {w}
+                      </li>
+                    ))}
+                  </ul>
+                  <p className="mt-4 text-[15px] leading-snug text-cream-muted">{r.moonshot ? copy.detail.moonshotNote : copy.detail.waysInNote}</p>
+                </>
+              ) : null}
 
-            <ShareKit r={r} p={p} />
+              <ShareKit r={r} p={p} />
+            </motion.div>
           </div>
-          <div className="flex gap-2.5 border-t border-cream-rule px-5 py-4 md:px-8">
+          <div className="flex shrink-0 gap-2.5 border-t border-cream-rule px-5 pt-3 pb-[max(12px,env(safe-area-inset-bottom))] md:px-8 md:py-4">
             <HashLink
               hash="#pass"
               publicUrl={PUBLIC_URLS.requests}
               onClick={(e) => {
                 // Cmd/ctrl-click etc. open the public page as usual (HashLink skips those).
                 if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
-                // Close first: the page is scroll-locked while the dialog is open, so scroll once it's gone.
+                // Close first: the page is scroll-locked while the dialog is open, and closing may
+                // step back in history, so scroll once that has settled.
                 e.preventDefault();
                 onClose();
-                setTimeout(() => document.getElementById("pass")?.scrollIntoView({ behavior: "smooth", block: "start" }), 60);
+                setTimeout(() => document.getElementById("pass")?.scrollIntoView({ behavior: "smooth", block: "start" }), 150);
               }}
               className="inline-flex min-h-12 flex-1 items-center justify-center gap-2.5 bg-crimson px-6 text-[15px] font-medium tracking-[0.04em] text-ink uppercase transition-colors hover:bg-crimson-hover [clip-path:polygon(0_0,calc(100%_-_7px)_0,100%_7px,100%_100%,7px_100%,0_calc(100%_-_7px))] sm:flex-none"
             >
@@ -467,7 +587,7 @@ function Detail({ id, onClose }: { id: string | null; onClose: () => void }) {
             </HashLink>
             <ShareButton r={r} p={p} />
           </div>
-        </div>
+        </motion.div>
       ) : null}
     </dialog>
   );
@@ -503,21 +623,23 @@ async function copyText(text: string) {
 }
 
 /**
- * The share image as a File, fetched when the detail opens so the Share tap can
- * call navigator.share straight away (iOS drops the tap if we await a fetch first).
+ * The share image as a File, fetched once a request has been open for a moment (not on
+ * every swipe past it) so the Share tap can call navigator.share straight away (iOS
+ * drops the tap if we await a fetch first). Until it's ready, Share sends the link.
  */
 function useCardFile(id: string) {
   const [file, setFile] = useState<File | null>(null);
   useEffect(() => {
     let live = true;
-    fetch(cardSrc(id))
+    const t = setTimeout(() => fetch(cardSrc(id))
       .then((res) => (res.ok ? res.blob() : null))
       .then((b) => {
         if (live && b) setFile(new File([b], `rfs-${id}.png`, { type: "image/png" }));
       })
-      .catch(() => {});
+      .catch(() => {}), 900);
     return () => {
       live = false;
+      clearTimeout(t);
       setFile(null);
     };
   }, [id]);
@@ -570,7 +692,7 @@ function ShareKit({ r, p }: { r: Request; p: Person }) {
     "inline-flex min-h-11 items-center justify-center rounded-full border border-cream-ink/25 px-4 text-[14px] font-semibold transition-colors hover:border-cream-ink/60 hover:bg-cream-card";
   return (
     // Just the links: shared links preview as the problem's card on their own.
-    <div id="rfs-share" className="mt-10 scroll-mt-4">
+    <div id="rfs-share" className="mt-9 scroll-mt-4">
       <p className="eyebrow text-cream-muted">{copy.share.title}</p>
       <div className="mt-3 flex flex-wrap gap-2">
         {links.map((l) => (

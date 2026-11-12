@@ -126,6 +126,16 @@ export const ExternalIcon = (p: IconProps) => (
     <path d="M17 14v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h4" />
   </Base>
 );
+export const ChevronLeftIcon = (p: IconProps) => (
+  <Base {...p}>
+    <path d="m15 6-6 6 6 6" />
+  </Base>
+);
+export const ChevronRightIcon = (p: IconProps) => (
+  <Base {...p}>
+    <path d="m9 6 6 6-6 6" />
+  </Base>
+);
 export const ChevronDownIcon = (p: IconProps) => (
   <Base {...p}>
     <path d="m6 9 6 6 6-6" />

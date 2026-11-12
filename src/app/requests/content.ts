@@ -834,6 +834,9 @@ export const copy = {
     waysInNote: "Starting points written by the TPF team. A small slice of the problem is plenty for four hours.",
     moonshotNote: "A moonshot: bigger than four hours, and worth sharing anyway. These are slices you could start on the day.",
     close: "Close",
+    prev: "Previous request",
+    next: "Next request",
+    position: (i: number, n: number) => `${i} of ${n}`,
     cta: "Build this on 22 Nov",
   },
   share: {

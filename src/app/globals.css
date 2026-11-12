@@ -368,6 +368,16 @@ body {
   }
 }
 
+/* Phone bottom sheet: rises from below the screen. */
+@keyframes sheet-in {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
 @keyframes sheet-up {
   from {
     transform: translateY(24px);
