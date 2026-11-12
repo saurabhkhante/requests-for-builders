@@ -811,7 +811,7 @@ export const copy = {
     from: "From people at Lightspeed, Sarvam, Coursera, Roblox, 3one4\u00a0Capital and more",
   },
   people: {
-    title: "Who's behind the ideas.",
+    title: "Who's behind the ideas",
     body: "Tap someone to see just their ideas.",
     swipe: "Swipe for more →",
     all: "Show everyone",
@@ -819,7 +819,7 @@ export const copy = {
   },
   board: {
     eyebrow: "The requests",
-    title: "Pick one.",
+    title: "Pick one",
     filters: { track: "Track", from: "From", all: "All", search: "Search requests or people" },
     showing: (n: number) => (n === 1 ? "1 request" : `${n} requests`),
     more: (n: number) => `Load more (${n} left)`,
@@ -875,7 +875,7 @@ export const copy = {
   },
   pass: {
     eyebrow: "Sun 22 Nov · Bengaluru",
-    title: "Come build it.",
+    title: "Come build it",
     body: "Four hours at Builder’s Day, on your own or in a group of up to three. One Builder’s Pass gets you the talks and the buildathon, plus $500 in Claude credits and other AI credits.",
     cta: "Request Builder’s Pass",
   },
