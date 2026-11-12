@@ -804,7 +804,7 @@ export const copy = {
     body: "Problems from founders, investors and operators at the frontier.",
     bg: "/brand/hero/unconf-hero-bg.avif",
     stats: { problems: "problems", people: "See who's asking", hours: "hours to build" },
-    browse: "Browse the requests",
+    browse: "Browse the ideas",
     /** The bubble after the hero faces. */
     more: "and more",
     /** Used on the board's link preview image. */
