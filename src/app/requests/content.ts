@@ -811,8 +811,8 @@ export const copy = {
     from: "From people at Lightspeed, Sarvam, Coursera, Roblox, 3one4\u00a0Capital and more",
   },
   people: {
-    title: "Behind the requests.",
-    body: "Tap someone to see just their requests.",
+    title: "Who's behind the ideas.",
+    body: "Tap someone to see just their ideas.",
     swipe: "Swipe for more →",
     all: "Show everyone",
     less: "Show fewer",
