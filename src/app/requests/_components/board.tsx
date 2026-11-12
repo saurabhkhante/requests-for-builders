@@ -226,7 +226,7 @@ export function Board() {
               );
             })}
           </ul>
-          <p className="mt-2 text-[13px] text-cream-muted sm:hidden">{copy.people.swipe(ASKERS.length)}</p>
+          <p className="mt-2 text-[13px] text-cream-muted sm:hidden">{copy.people.swipe}</p>
           <ul className="mt-8 hidden auto-rows-fr gap-2.5 sm:grid sm:grid-cols-2 lg:grid-cols-4">
             {(allPeople ? ASKERS : ASKERS.slice(0, PEOPLE_PREVIEW)).map((p) => {
               const active = person === p.id;
