@@ -72,6 +72,8 @@ export const people: readonly Person[] = [
   { id: "aviral", name: "Aviral Bhatnagar", role: "Investor", company: "A Junior VC", type: "VC", photo: "aviral.jpg" },
   { id: "shankar", name: "Shankar Ganesh", role: "Head of Product", company: "Storylane", type: "Operator", photo: "shankar.jpg", x: "_shankarganesh" },
   { id: "syed", name: "Syed Adil", role: "India Growth", company: "Replit", type: "Operator", photo: "syed.jpg" },
+  { id: "aman", name: "Aman Priyadarshi", role: "Founder", company: "Plazza", type: "Founder" },
+  { id: "soumyadeep", name: "Soumyadeep", role: "", company: "Dashverse" },
 ];
 
 export const tracks: readonly Track[] = [
@@ -778,6 +780,60 @@ export const requests: readonly Request[] = [
     waysIn: [
       "Two agents from different frameworks finishing one task together, with a clear hand-off in between.",
       "A shared log both agents write to, so a person can see who did what and why.",
+    ],
+  },
+  {
+    id: "accurate-weather",
+    title: "Weather Prediction That's Actually Accurate",
+    by: "aman",
+    track: "hardware",
+    request: "Software that predicts weather patterns accurately.",
+    pitch:
+      "Forecasts still miss what matters locally: the rain that floods one neighbourhood, the heatwave that hits a single district, the storm that ruins a farmer's harvest. Build software that predicts weather accurately at the scale people actually live and work at.",
+    waysIn: [
+      "Hyperlocal rain alerts for one city ward.",
+      "A crop-weather advisor for farmers.",
+      "A forecast that blends public satellite data with phone or IoT sensor readings.",
+    ],
+  },
+  {
+    id: "india-edge-chips",
+    moonshot: true,
+    title: "Edge Inference Chips for India",
+    by: "soumyadeep",
+    track: "hardware",
+    request: "Edge computing and inference chips for India.",
+    pitch:
+      "Most AI runs in far-off data centres, which is slow, costly and needs a good connection. Chips that run models on the device itself, built for Indian prices, conditions and languages, would let AI work anywhere in the country.",
+    waysIn: [
+      "A benchmark that runs one Indian-language model on cheap edge hardware and shows where it's too slow or too power-hungry.",
+      "A small model squeezed to run offline on a low-cost board or phone, doing one useful job like voice commands in Hindi.",
+    ],
+  },
+  {
+    id: "cursor-for-3d",
+    title: "Cursor for 3D Design for Manufacturing",
+    by: "soumyadeep",
+    track: "hardware",
+    request: "Cursor for 3D design for manufacturing.",
+    pitch:
+      "Designing a part for manufacturing still means hours in heavy CAD tools, and designs often fail when they meet the factory. A Cursor-style assistant would turn plain-language intent into a 3D model that can actually be made.",
+    waysIn: [
+      "Describe a simple part, like a bracket or an enclosure, and get an editable 3D model back.",
+      "Check a design against one way of making it, like 3D printing or CNC, and suggest fixes.",
+    ],
+  },
+  {
+    id: "phone-call-assistant",
+    title: "An AI Assistant over a Phone Call",
+    by: "soumyadeep",
+    track: "consumer",
+    request: "AI assistant over phone calls.",
+    pitch:
+      "Not everyone has a smartphone, a data plan or the habit of opening an app. An assistant you reach by dialling an ordinary number would bring AI to anyone with a phone, in their own language.",
+    waysIn: [
+      "Call a number, ask a question in Hindi or another Indian language, and get a spoken answer.",
+      "One useful job done end to end over a call, like checking a train's status or booking an appointment.",
     ],
   },
 ];
