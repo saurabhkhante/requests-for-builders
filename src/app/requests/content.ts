@@ -25,6 +25,8 @@ export type Person = {
   photo?: string;
   /** X handle without @, only when verified. Share text on X tags them. */
   x?: string;
+  /** A "connect with" link (e.g. a Bridge intro). When set, it replaces the Share button on their requests. */
+  connect?: { label: string; href: string };
 };
 
 export type Track = { id: string; label: string };
@@ -55,7 +57,7 @@ export const people: readonly Person[] = [
   { id: "tejeshwi", name: "Tejeshwi Sharma", role: "Co-founder", company: "Mettle Capital", type: "VC", photo: "tejeshwi.jpg" },
   { id: "misbah", name: "Misbah Ashraf", role: "Co-founder", company: "Jar", type: "Founder", photo: "misbah.jpg" },
   { id: "mona", name: "Mona Gandhi", role: "Co-founder & CEO", company: "Kello", type: "Founder", photo: "mona.jpg" },
-  { id: "mani", name: "Manikantha S", role: "Head of Product", company: "Sarvam", type: "Operator", photo: "mani.jpg" },
+  { id: "mani", name: "Manikantha S", role: "Head of Product", company: "Sarvam", type: "Operator", photo: "mani.jpg", connect: { label: "Connect with Mani", href: "https://brdg.app/s/0hn4wh" } },
   { id: "ajey", name: "Ajey Gore", role: "", company: "Gojek, Sequoia, PeakXV, ThoughtWorks", type: "Operator", photo: "ajey.jpg" },
   { id: "nikkitha", name: "Nikkitha Shanker", role: "Co-founder & CEO", company: "SuperBryn", type: "Founder", photo: "nikkitha.jpg" },
   { id: "deepak", name: "Deepak Abbot", role: "Co-founder", company: "indiagold", type: "Founder", photo: "deepak.jpg" },

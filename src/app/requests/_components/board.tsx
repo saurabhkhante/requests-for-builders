@@ -562,7 +562,19 @@ function Detail({ id, list, onStep, onClose }: { id: string | null; list: readon
             >
               {copy.detail.cta} →
             </HashLink>
-            <ShareButton r={r} p={p} />
+            {p.connect ? (
+              // Test: for people with a connect link, an intro replaces Share. Opens in a new tab (the page is framed).
+              <a
+                href={p.connect.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex min-h-12 items-center justify-center gap-2 border border-teal/50 bg-teal/[0.07] px-5 text-[15px] font-medium tracking-[0.04em] text-teal uppercase transition-colors hover:border-teal hover:bg-teal/[0.14]"
+              >
+                {p.connect.label} ↗
+              </a>
+            ) : (
+              <ShareButton r={r} p={p} />
+            )}
           </div>
         </motion.div>
       ) : null}
