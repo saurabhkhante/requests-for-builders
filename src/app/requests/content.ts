@@ -875,7 +875,7 @@ export const copy = {
   pass: {
     eyebrow: "Sun 22 Nov · Bengaluru",
     title: "Come build it",
-    body: "Four hours at Builder’s Day, on your own or in a group of up to three. One Builder’s Pass gets you the talks and the buildathon, plus $500 in Claude credits and other AI credits.",
+    body: "Four hours at Builder’s Day, on your own or in a group of up to two. One Builder’s Pass gets you the talks and the buildathon, plus $500 in Claude credits and other AI credits.",
     cta: "Request Builder’s Pass",
   },
 } as const;
