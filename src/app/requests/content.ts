@@ -76,6 +76,8 @@ export const people: readonly Person[] = [
   { id: "syed", name: "Syed Adil", role: "India Growth", company: "Replit", type: "Operator", photo: "syed.jpg" },
   { id: "aman", name: "Aman Priyadarshi", role: "Founder & CEO", company: "Plazza", type: "Founder", photo: "aman.jpg" },
   { id: "soumyadeep", name: "Soumyadeep Mukherjee", role: "Co-founder & CTO", company: "Dashverse", type: "Founder", photo: "soumyadeep.jpg" },
+  { id: "kaushal", name: "Kaushal", role: "", company: "SonyLIV", type: "Operator" },
+  { id: "pratik", name: "Pratik Poddar", role: "Partner", company: "Nexus Venture Partners", type: "VC", photo: "pratik.jpg", x: "pratikpoddar" },
 ];
 
 export const tracks: readonly Track[] = [
@@ -836,6 +838,71 @@ export const requests: readonly Request[] = [
     waysIn: [
       "Call a number, ask a question in Hindi or another Indian language, and get a spoken answer.",
       "One useful job done end to end over a call, like checking a train's status or booking an appointment.",
+    ],
+  },
+  {
+    id: "home-manager",
+    title: "An AI Home Manager for Everyone",
+    by: "kaushal",
+    track: "consumer",
+    request:
+      "An AI home manager for everyone. It decides what meal needs to be cooked based on each family member's context, talks to the cook or hourly help in their native language and takes their inputs on inventory, then auto-orders items that need replacing and schedules delivery at the preferred slot.",
+    shareLine: "An AI that runs the household: plans meals, talks to the cook in their language, and reorders what's running out.",
+    waysIn: [
+      "Start with tonight's dinner: family preferences in, a menu and a voice note to the cook in Hindi or Kannada out.",
+      "Let the cook reply by voice with what's running low, and turn that into a cart ready to order.",
+    ],
+  },
+  {
+    id: "people-crm",
+    title: "An AI-First CRM for the People Who Matter",
+    by: "pratik",
+    track: "consumer",
+    request:
+      "Life gets busy, and even relationships we treasure can quietly drift. I want an AI that remembers the little things (a friend's important milestone, a conversation left unfinished, someone going through a difficult time) and nudges me to show up thoughtfully. One would pay for help being a more present friend and family member.",
+    shareQuote: "I want an AI that remembers the little things and nudges me to show up thoughtfully.",
+    waysIn: [
+      "Capture from what you already have: a quick voice note after a call, or a forwarded chat.",
+      "Make each nudge personal: who, what to say, and why today.",
+    ],
+  },
+  {
+    id: "family-wealth",
+    title: "An AI Wealth Manager for the Indian Family",
+    by: "pratik",
+    track: "fintech",
+    request:
+      "In India, wealth is often a family affair, woven across generations, households, and shared responsibilities. I want an AI that understands the whole picture: assets held in different names, parents' needs, children's futures, and the dreams we're building together. One would pay for a trusted financial companion that helps the family plan, coordinate, and make informed decisions together.",
+    shareQuote: "I want an AI that understands the whole picture of a family's wealth, across generations.",
+    waysIn: [
+      "Build one family's picture: assets across members, plus the goals each one is saving for.",
+      "Answer a real family question, like \"can we fund our daughter's college and our parents' care?\"",
+    ],
+  },
+  {
+    id: "beyond-chat-box",
+    title: "AI Experiences Beyond the Chat Box",
+    by: "pratik",
+    track: "consumer",
+    request:
+      "I want builders to imagine AI as something we can inhabit: a canvas that takes shape as we think, a camera that makes the world actionable, a voice companion that helps while our hands are busy. What would software feel like if it could meet us in the moment, understand our surroundings, and offer exactly the interaction the task deserves? One would pay for experiences that turn intention into action with less effort.",
+    shareQuote: "I want builders to imagine AI as something we can inhabit.",
+    waysIn: [
+      "Pick one everyday task, like cooking or fixing something, and build it with no chat box: camera or voice only.",
+      "Design the interface around the moment: what does the AI show, and when does it stay quiet?",
+    ],
+  },
+  {
+    id: "smb-companion",
+    title: "An AI Companion for Small Business Owners",
+    by: "pratik",
+    track: "ops",
+    request:
+      "Small business owners have curiosity and ambition, but little room in their day to explore, learn, and find fresh inspiration. I want an AI that opens a window to new possibilities: how others have reinvented similar businesses, what emerging technologies could unlock, and which unfamiliar ideas are worth exploring. It should make learning approachable, in their language and grounded in their world. One would pay for a companion that helps me look beyond the day's demands and imagine what my business could become.",
+    shareQuote: "I want an AI that opens a window to new possibilities for small business owners.",
+    waysIn: [
+      "Pick one kind of business, like a kirana store or a tailor, and send a short daily idea in their language.",
+      "Ground each idea in a real example of a similar business that tried it.",
     ],
   },
 ];
