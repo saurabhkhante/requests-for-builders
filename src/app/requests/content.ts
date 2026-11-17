@@ -78,6 +78,9 @@ export const people: readonly Person[] = [
   { id: "soumyadeep", name: "Soumyadeep Mukherjee", role: "Co-founder & CTO", company: "Dashverse", type: "Founder", photo: "soumyadeep.jpg" },
   { id: "kaushal", name: "Kaushal Nagarsheth", role: "", company: "SonyLIV", type: "Operator" },
   { id: "pratik", name: "Pratik Poddar", role: "Partner", company: "Nexus Venture Partners", type: "VC", photo: "pratik.jpg", x: "pratikpoddar" },
+  { id: "sripriya", name: "Sripriya GN", role: "Head of Product", company: "NeoSapien", type: "Operator" },
+  { id: "nithin", name: "Nithin Rangarajan", role: "", company: "Chargebee", type: "Operator" },
+  { id: "prashanth", name: "Prashanth Rao", role: "", company: "Docusign", type: "Operator", photo: "prashanth.jpg" },
 ];
 
 export const tracks: readonly Track[] = [
@@ -903,6 +906,133 @@ export const requests: readonly Request[] = [
     waysIn: [
       "Pick one kind of business, like a kirana store or a tailor, and send a short daily idea in their language.",
       "Ground each idea in a real example of a similar business that tried it.",
+    ],
+  },
+  {
+    id: "auto-evals",
+    title: "Evals That Write Themselves",
+    by: "sripriya",
+    track: "ai-tools",
+    request:
+      "Every time a prompt, model or tool changes, PMs and domain experts redo hours of evals by hand: reading conversations, writing expected outcomes, building test cases. Build an eval system that generates test cases and expected outcomes from production logs and company KB docs, scores the agent on tool use and task completion, and brings in a human only when it's unsure. The goal is near-zero human effort per iteration, even as the agent keeps changing.",
+    shareLine: "Evals generated from production logs and company docs, so every prompt change gets tested without anyone writing a test.",
+    waysIn: [
+      "Point it at real conversation logs, change the agent's prompt, and show the regression report it produces without anyone writing a test.",
+      "Flag only the cases it's unsure about for a human to review.",
+    ],
+  },
+  {
+    id: "cost-per-outcome",
+    title: "Cost per Successful Outcome, Not Cost per Token",
+    by: "sripriya",
+    track: "ai-tools",
+    request:
+      "Cheaper models, caching and batching cut token spend. They also change failure rates, which changes how often requests are retried or fall back to another model. So savings that look good in a benchmark often disappear in production. Build an optimiser that replays real traffic, including failures and fallbacks, and tests cheaper setups against the team's own eval benchmarks. It should report cost per successful outcome, with evidence that quality held.",
+    shareLine: "An optimiser that replays real traffic and reports cost per successful outcome, not cost per token.",
+    waysIn: [
+      "Replay a day of logs against two model setups and show the \"cheaper\" one costing more once retries are counted.",
+      "Report quality next to cost, so a saving only counts if the evals still pass.",
+    ],
+  },
+  {
+    id: "procurement-agent",
+    title: "A Procurement Agent for Companies Without a Procurement Team",
+    by: "sripriya",
+    track: "ops",
+    request:
+      "In a mid-sized company, buying a laptop, a software licence or an event venue means hours of chasing vendors, comparing quotes, getting approvals and following up on invoices. Agents can already buy things for individuals, but work purchases have to respect budgets, approved vendors, approval chains and compliance. Build an agent that takes a plain-language request from any employee and handles it from quote to approval to purchase to invoice, inside company policy.",
+    shareLine: "An agent that takes \"I need 3 MacBooks by Monday\" and handles quotes, approval and the purchase order, inside company policy.",
+    waysIn: [
+      "\"I need 3 MacBooks for new joiners by Monday\" goes in. Out come a policy-compliant quote comparison, an approval request to the right person, and a purchase order.",
+      "Start with one written policy: budget limits, approved vendors, who approves what.",
+    ],
+  },
+  {
+    id: "career-taste",
+    title: "Know More About Your Career Choice",
+    by: "nithin",
+    track: "learning",
+    request:
+      "Teenagers are asked \"what do you want to be?\" long before they've seen what any job involves. I want an AI that takes a teen's interests, whether that's gaming, football, drawing, or cooking, and gives them a real 30-minute taste of a career built around it: a mini-project, a few honest questions from someone in that field, and a clear view of the unglamorous parts too. I'd pay for something that helps my kids explore with curiosity instead of pressure.",
+    waysIn: [
+      "Interest in, three matching careers out, each with one small \"try it today\" task, such as designing a level, planning a match-day budget, or sketching a logo brief.",
+      "Include a \"what the day is really like\" note per career, with the boring parts and the hard parts.",
+    ],
+  },
+  {
+    id: "recipe-keeper",
+    title: "The Family Recipe Keeper",
+    by: "nithin",
+    track: "consumer",
+    request:
+      "Many family recipes only exist in someone's head, or as a photo of a stained notebook page. I want a tool that captures them: a parent talks through a dish while cooking, and the AI turns it into a clear recipe with quantities, steps, and the little tricks that never get written down. I'd pay to preserve something that's otherwise lost when the cook is gone.",
+    waysIn: [
+      "Voice or video in, a clean recipe card out, with gaps flagged (\"how much is 'a pinch'?\").",
+      "Add a prompt that asks the cook for the story behind the dish.",
+    ],
+  },
+  {
+    id: "hard-conversation",
+    title: "The Hard Conversation Rehearsal",
+    by: "nithin",
+    track: "consumer",
+    request:
+      "We all have conversations we keep avoiding: telling a friend they hurt us, asking a parent to see a doctor, raising something awkward with a partner. Often it's not that we don't care, it's that we don't know how to start. I want an AI that lets me rehearse. I describe the situation and the person, it plays them realistically, and afterwards tells me what landed well and what might have sounded harsh. I'd pay for the confidence to have the conversations that matter instead of letting them fester.",
+    waysIn: [
+      "Start with one scenario type, such as a disagreement with a close friend. Ask three questions about the person, then run a short back-and-forth role-play.",
+      "End with a \"how that might have felt on their side\" note and two alternative ways to open the conversation, one gentler and one more direct.",
+    ],
+  },
+  {
+    id: "before-you-sign",
+    title: "Understand Before You Sign",
+    by: "prashanth",
+    track: "consumer",
+    request:
+      "Millions of Indians sign rental agreements, loan papers, insurance policies and offer letters written in dense English legal language they can't fully follow. They often find out about a lock-in period, a penalty or an auto-renewal clause only after it costs them. Build a voice-first assistant that takes a photo or PDF of an agreement and explains, in the signer's own language, what they are agreeing to. It flags unusual or one-sided clauses and suggests questions to ask before signing.",
+    shareLine: "A voice assistant that reads any agreement and explains it in your own language before you sign.",
+    waysIn: [
+      "A real rental agreement goes in, and a spoken Kannada or Hindi walkthrough comes out, covering the three clauses that matter most and why.",
+      "Flag one-sided clauses and suggest the questions to ask the landlord or lender.",
+    ],
+  },
+  {
+    id: "parents-from-afar",
+    title: "Caring for Parents From Afar",
+    by: "prashanth",
+    track: "health",
+    request:
+      "Many professionals in Bengaluru look after aging parents who live in another city. Prescriptions, lab reports and doctors' notes are scattered across WhatsApp chats and paper files, and there's no clear picture of what's changing over time. Build a family health organiser that collects reports and prescriptions into a single timeline and tracks key readings over time. It also checks in with the parent by voice each day, in their own language. It flags changes worth raising with their doctor but never diagnoses anything itself.",
+    shareLine: "One health timeline for parents in another city, with daily voice check-ins in their language.",
+    waysIn: [
+      "A messy folder of reports becomes a clean timeline with a trend chart and one well-supported \"ask the doctor about this\" flag.",
+      "Never diagnose: only surface changes worth raising with the doctor.",
+    ],
+  },
+  {
+    id: "listing-real",
+    title: "Is This Listing Real?",
+    by: "prashanth",
+    track: "consumer",
+    request:
+      "Renters in Bengaluru lose weekends chasing listings that are stale, duplicated across sites, priced low to lure them in, or posted by brokers pretending to be owners. Trust is often the real gap in this marketplace, not supply. Build an agent that takes a listing link, compares it against other public listings, and returns a trust score with reasons. Those factors could include reused photos, a price far from the local market rate, the listing's age and signs that a broker posted it.",
+    shareLine: "Paste a rental listing, get a trust score with reasons: reused photos, suspicious price, broker posing as owner.",
+    waysIn: [
+      "Five listing links go in, a ranked shortlist comes out, and the tool catches at least one fake or stale listing.",
+      "Show the reason behind every score, like a reused photo or a price far below the area's rate.",
+    ],
+  },
+  {
+    id: "kirana-reorder",
+    title: "The Kirana Reorder Copilot",
+    by: "prashanth",
+    track: "ops",
+    request:
+      "Neighbourhood stores reorder by gut feel when the distributor's salesperson visits. The result is fast-selling items running out and slow ones expiring on the shelf, and owners have no time or tools to do better. Build an AI assistant that learns from photos of shelves and storage, and from handwritten or printed bills. It produces a suggested reorder list, with quantities, before the distributor arrives.",
+    shareLine: "Shelf photos and bills in, a reorder list the shop owner trusts out, ready before the distributor visits.",
+    waysIn: [
+      "A handful of shelf photos and bills become a reorder list the shop owner would actually trust, with the reasoning shown for each item.",
+      "Start with one shelf and twenty products before going store-wide.",
     ],
   },
 ];
