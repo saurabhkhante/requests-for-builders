@@ -78,9 +78,9 @@ export const people: readonly Person[] = [
   { id: "soumyadeep", name: "Soumyadeep Mukherjee", role: "Co-founder & CTO", company: "Dashverse", type: "Founder", photo: "soumyadeep.jpg" },
   { id: "kaushal", name: "Kaushal Nagarsheth", role: "", company: "SonyLIV", type: "Operator" },
   { id: "pratik", name: "Pratik Poddar", role: "Partner", company: "Nexus Venture Partners", type: "VC", photo: "pratik.jpg", x: "pratikpoddar" },
-  { id: "sripriya", name: "Sripriya GN", role: "Head of Product", company: "NeoSapien", type: "Operator" },
-  { id: "nithin", name: "Nithin Rangarajan", role: "", company: "Chargebee", type: "Operator" },
-  { id: "prashanth", name: "Prashanth Rao", role: "", company: "Docusign", type: "Operator", photo: "prashanth.jpg" },
+  { id: "sripriya", name: "Sripriya GN", role: "Head of Product", company: "NeoSapien", type: "Operator", photo: "sripriya.jpg" },
+  { id: "nithin", name: "Nithin Rangarajan", role: "Product Leadership", company: "Chargebee", type: "Operator", photo: "nithin.jpg" },
+  { id: "prashanth", name: "Prashanth Rao", role: "Senior Director, Product Management", company: "Docusign", type: "Operator", photo: "prashanth.jpg" },
 ];
 
 export const tracks: readonly Track[] = [
