@@ -81,6 +81,7 @@ export const people: readonly Person[] = [
   { id: "sripriya", name: "Sripriya GN", role: "Head of Product", company: "NeoSapien", type: "Operator", photo: "sripriya.jpg" },
   { id: "nithin", name: "Nithin Rangarajan", role: "VP Product", company: "Chargebee", type: "Operator", photo: "nithin.jpg" },
   { id: "prashanth", name: "Prashanth Rao", role: "Senior Director and India Product Head", company: "Docusign", type: "Operator", photo: "prashanth.jpg" },
+  { id: "hariram", name: "Hariram Keerthivasan", role: "Field Marketing Manager", company: "Mixpanel", type: "Operator" },
 ];
 
 export const tracks: readonly Track[] = [
@@ -1033,6 +1034,45 @@ export const requests: readonly Request[] = [
     waysIn: [
       "A handful of shelf photos and bills become a reorder list the shop owner would actually trust, with the reasoning shown for each item.",
       "Start with one shelf and twenty products before going store-wide.",
+    ],
+  },
+  {
+    id: "scam-before-payment",
+    title: "Stop the Scam Before the Payment",
+    by: "hariram",
+    track: "fintech",
+    request:
+      "Most UPI fraud today isn't hacking: the victim makes the payment themselves while a scammer coaches them on a call. Bank fraud systems watch for people breaking into accounts, not for genuine users being manipulated. Once the payment goes through, the money passes through mule accounts within minutes, so the payment screen is the last chance to stop it. Build an in-app layer that spots a scam in progress and pauses the payment before the money leaves.",
+    shareLine: "An in-app layer that spots a UPI scam in progress and pauses the payment before the money leaves.",
+    waysIn: [
+      "An Android demo that flags a payment made during an active call with screen-sharing on, to a new payee, for an unusual amount.",
+      "Pause for a short voice check in the user's language, asking the questions scammers coach victims to lie about. Everything runs on the phone.",
+    ],
+  },
+  {
+    id: "app-guide-parents",
+    title: "An App Guide for Your Parents",
+    by: "hariram",
+    track: "consumer",
+    request:
+      "Parents call their children to ask how to book a ticket, pay a bill or renew a policy. Millions of people own a smartphone but still need someone else to use it, and that dependence makes them easy targets for scammers who offer to \"help.\" Build a voice guide that sees the screen and walks them through any app, one tap at a time, in their own language. A patient guide gives them independence without anyone taking over their phone.",
+    shareLine: "A voice guide that sees the screen and walks parents through any app, one tap at a time, in their language.",
+    waysIn: [
+      "An Android assistant that reads the screen, understands the goal, and highlights and speaks the next tap.",
+      "It never taps on the user's behalf for payments. Demo three real tasks in Hindi or a regional language.",
+    ],
+  },
+  {
+    id: "next-customer-ai",
+    title: "Your Next Customer Is an AI",
+    by: "hariram",
+    track: "ops",
+    request:
+      "Shoppers now say \"find me the best one and order it,\" and an AI does the rest. It compares, picks and buys, and the brand never learns it lost the sale. This is a sales funnel no brand can see: analytics tools discard AI visits as bot traffic, and today's tools only track whether a brand gets mentioned, not whether it gets bought. Build the analytics that tells brands what the AI saw and why it chose someone else.",
+    shareLine: "Analytics that tells brands what the AI shopper saw, and why it bought from someone else.",
+    waysIn: [
+      "Pick one category and send hundreds of real shopping requests to ChatGPT, Gemini and Perplexity, like \"cotton kurta under ₹1,500, delivered to Pune by Friday.\" Record which product each AI picked and why it rejected the others.",
+      "Deliver a weekly report showing which brands win, which lose, and the top three fixes for each brand that loses.",
     ],
   },
 ];
