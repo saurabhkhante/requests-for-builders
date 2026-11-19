@@ -81,7 +81,7 @@ export const people: readonly Person[] = [
   { id: "sripriya", name: "Sripriya GN", role: "Head of Product", company: "NeoSapien", type: "Operator", photo: "sripriya.jpg" },
   { id: "nithin", name: "Nithin Rangarajan", role: "VP Product", company: "Chargebee", type: "Operator", photo: "nithin.jpg" },
   { id: "prashanth", name: "Prashanth Rao", role: "Senior Director and India Product Head", company: "Docusign", type: "Operator", photo: "prashanth.jpg" },
-  { id: "hariram", name: "Hariram Keerthivasan", role: "Field Marketing Manager", company: "Mixpanel", type: "Operator", photo: "hariram.jpg" },
+  { id: "marzook", name: "Marzook Suhail", role: "Senior Customer Engineer", company: "Mixpanel", type: "Operator", photo: "marzook.jpg" },
 ];
 
 export const tracks: readonly Track[] = [
@@ -1039,7 +1039,7 @@ export const requests: readonly Request[] = [
   {
     id: "scam-before-payment",
     title: "Stop the Scam Before the Payment",
-    by: "hariram",
+    by: "marzook",
     track: "fintech",
     request:
       "Most UPI fraud today isn't hacking: the victim makes the payment themselves while a scammer coaches them on a call. Bank fraud systems watch for people breaking into accounts, not for genuine users being manipulated. Once the payment goes through, the money passes through mule accounts within minutes, so the payment screen is the last chance to stop it. Build an in-app layer that spots a scam in progress and pauses the payment before the money leaves.",
@@ -1052,7 +1052,7 @@ export const requests: readonly Request[] = [
   {
     id: "app-guide-parents",
     title: "An App Guide for Your Parents",
-    by: "hariram",
+    by: "marzook",
     track: "consumer",
     request:
       "Parents call their children to ask how to book a ticket, pay a bill or renew a policy. Millions of people own a smartphone but still need someone else to use it, and that dependence makes them easy targets for scammers who offer to \"help.\" Build a voice guide that sees the screen and walks them through any app, one tap at a time, in their own language. A patient guide gives them independence without anyone taking over their phone.",
@@ -1065,7 +1065,7 @@ export const requests: readonly Request[] = [
   {
     id: "next-customer-ai",
     title: "Your Next Customer Is an AI",
-    by: "hariram",
+    by: "marzook",
     track: "ops",
     request:
       "Shoppers now say \"find me the best one and order it,\" and an AI does the rest. It compares, picks and buys, and the brand never learns it lost the sale. This is a sales funnel no brand can see: analytics tools discard AI visits as bot traffic, and today's tools only track whether a brand gets mentioned, not whether it gets bought. Build the analytics that tells brands what the AI saw and why it chose someone else.",
